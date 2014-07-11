@@ -1,19 +1,22 @@
 CC = gcc
 CFLAGS = -Wall
 TARGET = hashes
-#SRCS = add_hash.c xor_hash.c rotating.c djb_hash.c hash_algos.c
-SRCS = src/*.c
-OBJS = $(SRCS:.c=.o)
+INCLUDE = include
+SRC = src
 
-.PHONY = clean
+.PHONY: clean $(SRC)
+.SILENT: clean
 
-all: $(TARGET)
+build: $(TARGET)
 	@echo Hash algorithms has been compiled
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+$(TARGET): $(SRC)
+	$(CC) $(CFLAGS) -I $(INCLUDE) -o $(TARGET) $(wildcard $(SRC)/*.o) hash_algos.c
 
-.c.o:
-	$(CC) -c $<
+$(SRC):
+	$(MAKE) -C $@ all
+
 clean:
-	rm *.o $(TARGET)
+	$(MAKE) -is -C $(SRC) clean
+	- rm $(TARGET)
+	@echo All temporary files have been removed
