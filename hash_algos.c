@@ -5,32 +5,40 @@
 #include "xor_hash.h"
 #include "rotating.h"
 #include "djb_hash.h"
+#include "map.h"
 
-int main() {
-  char *buffer = NULL;
-  int hash, nn;
-  size_t len;
-
-  getline(&buffer, &len, stdin);
+void stripline(char *buffer) {
+  int nn;
 
   nn = strlen(buffer) - 1;
 
-   if (buffer[nn] == '\n')
-     buffer[nn] = '\0';
+  if (buffer[nn] == '\n')
+    buffer[nn] = '\0';
+}
 
-  printf("string length: %lu\n", strlen(buffer));
+void runner(const char *name, char *buffer, size_t len) {
+  int i, hash;
 
-  hash = add_hash(buffer, len);
-  printf("add: %d\n", hash);
+  for (i = 0; i < (sizeof(map) / sizeof(map[0])); i++) {
+    if (!strcmp(map[i].name, name) && map[i].func) {
+      hash = map[i].func(buffer, len);
+    }
+  }
 
-  hash = xor_hash(buffer, len);
-  printf("xor: %d\n", hash);
+  printf("%s: %d\n", name, hash);
+}
 
-  hash = rotating_hash(buffer, len);
-  printf("rotating: %d\n", hash);
+int main() {
+  char *buffer = NULL;
+  size_t len;
 
-  hash = djb_hash(buffer, len);
-  printf("djb: %d\n", hash);
+  getline(&buffer, &len, stdin);
+  stripline(buffer);
+
+  runner("add", buffer, len);
+  runner("xor", buffer, len);
+  runner("rot", buffer, len);
+  runner("djb", buffer, len);
 
   free(buffer);
 
