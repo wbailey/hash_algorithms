@@ -6,7 +6,7 @@
 #include <assert.h>
 #include "input_data.h"
 
-void input_strip(char *str) {
+void Input_strip(char *str) {
   int nn;
 
   nn = strlen(str) - 1;
@@ -43,7 +43,7 @@ struct Input * Input_create() {
     str[len] = '\0';
   }
 
-  input_strip(str);
+  Input_strip(str);
 
   d->data = str;
   d->length = len;

@@ -1,15 +1,14 @@
 #include "runner.h"
-#include "input_data.h"
 
 int main() {
-  struct Input *i = Input_create();
+  struct Input *input = Input_create();
 
-  runner("add", i->data, i->length);
-  runner("xor", i->data, i->length);
-  runner("rot", i->data, i->length);
-  runner("djb", i->data, i->length);
+  runner("add", input);
+  runner("xor", input);
+  runner("rot", input);
+  runner("djb", input);
 
-  Input_destroy(i);
+  Input_destroy(input);
 
   return 0;
 }

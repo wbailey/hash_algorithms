@@ -1,2 +1,3 @@
 #include <stdio.h>
-void runner(const char *, char *, size_t);
+#include "input_data.h"
+void runner(const char *, struct Input *);
